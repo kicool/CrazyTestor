@@ -8,10 +8,17 @@
 package controllers
 
 import "github.com/robfig/revel"
-
+import "net/http"
+import "log"
 
 func init(){
 	revel.RegisterPlugin(MongodbPlugin{})
 	RunContextMgr()
+	go listen()
 }
 
+func listen(){
+	http.HandleFunc("/", receiveHandler)
+	log.Fatal(http.ListenAndServe(":8081", nil))
+
+}
