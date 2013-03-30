@@ -28,7 +28,7 @@ func NewContext(s *Message) *Context {
 	c := Context{ToUserName: (*s)["ToUserName"],
 		FromUserName: (*s)["FromUserName"],
 		CreateTime:   (*s)["CreateTime"],
-		MsgType:      (*s)["CreateTime"],
+		MsgType:      (*s)["MsgType"],
 		Content:      (*s)["Content"]}
 	c.MsgId, err = strconv.ParseInt((*s)["MsgId"], 10, 64)
 	if err != nil {
