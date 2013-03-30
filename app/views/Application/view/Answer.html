@@ -1,0 +1,139 @@
+<div class="span10">
+    <ul class="breadcrumb">
+        <li><a href="Index">首页</a> <span class="divider">/</span></li>
+        <li class="active">答案管理</li>
+    </ul>
+    <div class="row-fluid">
+
+        <div style="margin-bottom: 5px;">
+         <span>问题列表:</span>
+            <select id="questions" currentId="{{.questionId}}" currentTestId="{{.testId}}">
+                {{range .questions}}
+                    <option value="{{.Id}}">{{.Title}}</option>
+                {{end}}
+            </select>
+        </div>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+                <th style="text-align: center;width: 30px;">ID</th>
+                <th style="text-align: center">问题Id</th>
+                <th style="text-align: center">答案</th>
+                <th style="text-align: center">结果</th>
+                <th style="text-align: center">连接答案</th>
+                <th style="text-align: center;width: 250px;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                {{range .answers}}
+                <tr>
+                    <td style="text-align: center;vertical-align: middle">
+                        {{.Id}}
+                    </td>
+                    <td style="vertical-align: middle;width: 50px;"> {{.QuestionId}}</td>
+                    <td style="vertical-align: middle"> {{.Content}}</td>
+                    <td style="vertical-align: middle"> {{.Result}}</td>
+                    <td style="vertical-align: middle"> <span data-action="next" data-value="{{.NextQuestionId}}"></span></td>
+                    <td  style="vertical-align: middle;text-align: center;">
+
+                        <span data-id="{{.Id}}" data-action="edit" class="btn btn-info" ><i class="icon-edit icon-white"></i>编辑</span>
+
+                        <span data-id="{{.Id}}" data-action="delete" class="btn btn-inverse" ><i class="icon-trash icon-white"></i>删除</span>
+                    </td>
+                </tr>
+                {{end}}
+
+
+            </tbody>
+        </table>
+        <hr>
+        <form id="answerForm" action="#"  class="form-horizontal" style="margin-top: 10px;">
+            <div class="control-group">
+                <label class="control-label" for="content">答案内容</label>
+                <div class="controls">
+                    <input type="text" id="content" data-not-null="true" placeholder="答案内容">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="result">结果</label>
+                <div class="controls">
+                    <textarea  id="result" data-not-null="true" placeholder="答案内容"> </textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="nextQuestionId">连接问题</label>
+                <div class="controls">
+                   <select id="nextQuestionId">
+                       <option value="0">不选择</option>
+                       {{range .questions}}
+                               <option value="{{.Id}}">{{.Title}}</option>
+                       {{end}}
+                   </select>
+                </div>
+            </div>
+            <input type="hidden" id="testId" value="{{.testId}}">
+            <input type="hidden" id="questionId" value="{{.questionId}}">
+            <div class="control-group">
+                <div class="controls">
+                    <button id="add" type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{template "msg.html" .}}
+<script>
+    $(function(){
+        var answerForm = new SmartForm("answerForm",[
+            "content","questionId","result","nextQuestionId"
+        ],{
+            action:"GET",
+            url:"question/addanswer",
+            debug:false
+        });
+        answerForm.onVerificationError(function(elObj){
+            msg("请填写内容.");
+            elObj.el.focus();
+        });
+        answerForm.onSuccess(function(data){
+            if(!data.success){
+                msg("错误:" + data.message);
+            } else {
+                document.location.reload();
+            }
+        });
+
+        $("span[data-action=\"delete\"]").click(function(){
+            var id = $(this).attr("data-id");
+            var url = "question?action=delete&id=" + id;
+            $.ajax({
+                url:url,
+                success:function(data){
+                    if(!data.success){
+                        msg("错误:" + data.message);
+                    } else {
+                        document.location.reload();
+                    }
+                }
+            });
+        });
+        $("span[data-action=\"edit\"]").click(function(){
+            var id = $(this).attr("data-id");
+
+
+        });
+        $("#questions").val($("#questions").attr("currentId"));
+        $("#questions").change(function(){
+            var questionId = $(this).val();
+            var testId=$(this).attr("currentTestId");
+            document.location.href="answer?questionId=" + questionId + "&testId=" + testId;
+
+        })
+        $("span[data-action=next]").each(function(){
+            var v = $(this).attr("data-value");
+            var text = $("#nextQuestionId option[value=\""+v+"\"]").text();
+            $(this).text(text);
+        })
+    });
+</script>

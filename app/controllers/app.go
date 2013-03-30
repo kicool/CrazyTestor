@@ -19,17 +19,28 @@ func (c Application) Test() revel.Result {
 	return c.Render(list,module)
 }
 
-func (c Application) Question() revel.Result {
+func (c Application) Question(testId int64) revel.Result {
 	tests:=testService.Find();
 	module := "question"
 
-	testBean := testService.GetOne();
-	testId:=testBean.Id
+    if(testId ==0){
+		testBean := testService.GetOne();
+		testId = testBean.Id
+	}
+
 
 	list:=questionService.Find(testId)
 
 	return c.Render(module,tests,testId,list)
 }
+
+func (c Application) Answer(questionId int64,testId int64) revel.Result {
+	questions := questionService.Find(testId)
+   	answers:=  answerService.Find(questionId)
+	module := "question"
+    return c.Render(questions,questionId,testId,answers,module)
+}
+
 
 func (c Application) Login() revel.Result{
 	return c.Render()

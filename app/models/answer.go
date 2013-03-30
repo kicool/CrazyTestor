@@ -12,5 +12,6 @@ type Answer struct {
 	Content string
 	Result string
 	NextQuestionId int64
+	QuestionId int64
 }
 

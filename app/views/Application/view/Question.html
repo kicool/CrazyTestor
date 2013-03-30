@@ -36,7 +36,7 @@
 
                     <td  style="vertical-align: middle;text-align: center;">
 
-                        <span data-id="{{.Id}}" data-action="edit" class="btn btn-info" ><i class="icon-edit icon-white"></i>设置答案</span>
+                        <span data-id="{{.Id}}" data-test-id="" data-action="edit" class="btn btn-info" ><i class="icon-edit icon-white"></i>设置答案</span>
 
                         <span data-id="{{.Id}}" data-action="delete" class="btn btn-inverse" ><i class="icon-trash icon-white"></i>删除</span>
                     </td>
@@ -102,8 +102,15 @@
         });
         $("span[data-action=\"edit\"]").click(function(){
             var id = $(this).attr("data-id");
+            var testId = $(this).attr("data-test-id");
+            document.location.href="answer?questionId=" + id + "&testId=" + testId;
 
 
+        }).attr("data-test-id",$("#tests").attr("currentid"));
+        $("#tests").val($("#tests").attr("currentid")).change(function(){
+            var testId=$(this).val();
+            document.location.href="question?testId=" + testId;
         });
+
     });
 </script>
