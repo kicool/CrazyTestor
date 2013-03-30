@@ -9,6 +9,8 @@ GET     /question                               Application.Question
 GET     /answer                                 Application.Answer
 
 
+GET     /api                                    Application.Api
+
 GET     /test/add                               TestController.Add
 
 

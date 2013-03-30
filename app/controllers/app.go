@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/robfig/revel"
-	"CrazyTestor/app/models"
 )
 
 type Application struct {
@@ -49,9 +48,6 @@ func (c Application) Login() revel.Result{
 
 
 func (c Application) Api() revel.Result {
-	 testBean := &models.Test{};
-	testBean.Title="123"
-	testBean.Id= 1
-	//c.RenderXml()
-	return c.RenderXml(testBean)
+
+	return c.Render()
 }

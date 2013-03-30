@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="static/jquery-latest.js"></script>
+    <title>JSP Page</title>
+</head>
+<body>
+<h1>Message</h1>
+<textarea id="message" style="width: 400px;height: 200px;">
+<xml>
+        <ToUserName><![CDATA[toUser]]></ToUserName>
+        <FromUserName><![CDATA[fromUser]]></FromUserName>
+        <CreateTime>12345678</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content><![CDATA[content]]></Content>
+        <FuncFlag>0</FuncFlag>
+</xml>
+</textarea>
+<input id="url" placeholder="URL"/>
+<button value="提交" id="submit">提交</button>
+</body>
+</html>
+<script type="text/javascript">
+    $(function(){
+        $("#submit").on("click",function(){
+            var message = $("#message").val();
+
+            var url= $("#url").val()
+            $.ajax({
+                type:"POST",
+                url:url,
+                async:false,
+                data:message,
+                success:function(data){
+                    console.log("...");
+                    console.log(data);
+
+                }
+            })
+        })
+    });
+</script>
+
