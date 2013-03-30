@@ -50,3 +50,21 @@ func (qc QuestionController) Add(testId int64,title string) revel.Result{
 
 	return qc.RenderJson(ret)
 }
+
+func (qc QuestionController) Get(id int64) revel.Result {
+	ret:=make(map[string]interface {})
+	ret["success"] = true
+	q,a:=questionService.Get(id)
+	ret["question"] = q
+	ret["answer"] = a
+	return qc.RenderJson(ret)
+}
+
+
+func (qc QuestionController) GetAnswer(id int64,content string) revel.Result {
+	ret:=make(map[string]interface {})
+	ret["success"] = true
+	a:=questionService.GetAnswer(id,content)
+	ret["answer"] = a
+	return qc.RenderJson(ret)
+}

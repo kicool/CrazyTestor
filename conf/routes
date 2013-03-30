@@ -14,8 +14,8 @@ GET     /test/add                               TestController.Add
 
 GET     /question/add                           QuestionController.Add
 GET     /question/addanswer                     QuestionController.AddAnswer
-GET     /question/{testId}                      Application.Question
-
+GET     /question/{id}                          QuestionController.Get
+GET     /question/get/{id}/{content}                QuestionController.GetAnswer
 #Login
 
 GET     /Login                                  Application.Login

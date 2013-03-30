@@ -9,7 +9,6 @@ package services
 
 import (
 	"labix.org/v2/mgo"
-	"strconv"
 	"CrazyTestor/app/models"
 	"labix.org/v2/mgo/bson"
 )
@@ -26,9 +25,35 @@ type QuestionService struct {
 	MongodbService
 }
 
-func (us *QuestionService) Get(id int64) string {
-	return "test:" + strconv.Itoa(int(id))
+func (us *QuestionService) Get(id int64) ( *models.Question,[]models.Answer) {
+	question:=&models.Question{}
+	answers:=[]models.Answer{}
+	if(id == 0){
+	   question = us.GetOne()
+	} else {
+	   us.c.Find(bson.M{"id":id}).One(question)
+	}
+	answers = GetAnswerService().Find(question.Id)
+	return question,answers
 }
+
+func (us *QuestionService) GetAnswer(questionId int64, content string) *models.Answer {
+	question := &models.Question{}
+	answers := []models.Answer{}
+	us.c.Find(bson.M{"id": questionId}).One(question)
+
+	answers = GetAnswerService().Find(question.Id)
+	for _, answer:= range answers {
+		 if(answer.Content == content) {
+			 return &answer
+		 }
+	}
+
+	return nil
+
+
+}
+
 
 func (us *QuestionService) Count() int {
 	ret := 0
