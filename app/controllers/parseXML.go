@@ -14,7 +14,7 @@ type SessionData struct {
 	CreateTime string `xml:CreateTime`
 	MsgType string `xml:MsgType`
 	Content string `xml:Content`
-	MsgId string `xml:MsgID`
+//	MsgId string `xml:MsgID`
 }
 
 func (data SessionData) ToMap() map[string]string {
@@ -24,7 +24,7 @@ func (data SessionData) ToMap() map[string]string {
 	result["CreateTime"] = data.CreateTime
 	result["MsgType"] = data.MsgType
 	result["Content"] = data.Content
-	result["MsgId"] = data.MsgId
+//	result["MsgId"] = data.MsgId
 	return result
 }
 
@@ -52,6 +52,7 @@ func receiveHandler(w http.ResponseWriter, req *http.Request){
 
 	xml.Unmarshal(xmlValue, &data)
 	parsedMap := data.ToMap()
+	log.Print(parsedMap)
 	output:= Invoke(&parsedMap)
 //	fmt.Println("after parse:" , parsedMap)
 	
