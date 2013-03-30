@@ -11,6 +11,7 @@ import (
 	"labix.org/v2/mgo"
 	"strconv"
 	"CrazyTestor/app/models"
+	"labix.org/v2/mgo/bson"
 )
 
 var (
@@ -48,10 +49,16 @@ func (us *AnswerService) Add(answer *models.Answer) {
 	us.mutex.Unlock()
 }
 
+func (us *AnswerService) Find(questionId int64) []models.Answer{
+	result :=[]models.Answer{}
+	us.c.Find(bson.M{"questionid": questionId}).All(&result)
+return result
+}
+
 func InitAnswerService(session *mgo.Session, db *mgo.Database) {
 	if _answerServiceInstance == nil {
 		_answerServiceInstance = &AnswerService{}
-		_answerServiceInstance.Init(session, db, TEST_COLLECTION)
+		_answerServiceInstance.Init(session, db, ANSWER_COLLECTION)
 	}
 }
 

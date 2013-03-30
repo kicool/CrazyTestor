@@ -3,15 +3,18 @@
 # ~~~~
 
 GET     /                                       Application.Index
-GET     /index                                       Application.Index
+GET     /index                                  Application.Index
 GET     /test                                   Application.Test
 GET     /question                               Application.Question
+GET     /answer                                 Application.Answer
+
 
 GET     /test/add                               TestController.Add
 
 
 GET     /question/add                           QuestionController.Add
-
+GET     /question/addanswer                     QuestionController.AddAnswer
+GET     /question/{testId}                      Application.Question
 
 #Login
 

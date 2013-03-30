@@ -19,6 +19,22 @@ type QuestionController struct {
 func (qc QuestionController) Index () revel.Result {
 	return qc.Render()
 }
+
+func (qc QuestionController) AddAnswer(questionId,nextQuestionId int64,content,result string) revel.Result{
+	ret:=make(map[string]interface {})
+	ret["success"] = true
+
+	answer := &models.Answer{}
+	answer.Content = content
+	answer.NextQuestionId = nextQuestionId
+	answer.QuestionId = questionId
+	answer.Result = result
+	answerService.Add(answer)
+
+	return qc.RenderJson(ret)
+
+}
+
 /**
 
  */
@@ -32,10 +48,5 @@ func (qc QuestionController) Add(testId int64,title string) revel.Result{
 
 	questionService.Add(question)
 
-	return qc.RenderJson(ret)
-}
-
-func (qc QuestionController) AddAnswer(questionId,nextId int64,content,result string)revel.Result{
-	ret:=make(map[string]interface {})
 	return qc.RenderJson(ret)
 }
