@@ -24,7 +24,7 @@ type Context struct {
 }
 
 func NewContext(s *Message) *Context {
-	var err error
+	//var err error
 	c := Context{ToUserName: (*s)["ToUserName"],
 		FromUserName: (*s)["FromUserName"],
 		CreateTime:   (*s)["CreateTime"],
@@ -51,7 +51,7 @@ func (c *Context) handle(s *Message) {
 	data := (*s)["Content"]
 	log.Println("handling:", data)
 
-	if data == "?" {
+	if (*c).QuesstionID == 0  {
 		question, answers := questionService.Get(0)
 		//rsp := mashup question and answers
 		rsp := &Message{"ToUserName": (*s)["FromUserName"],
