@@ -21,6 +21,8 @@ var (
 	dbName  = "revel_test"
 
 	idsService *services.IdsService
+	testService *services.TestService
+	questionService *services.QuestionService
 
 )
 
@@ -56,8 +58,11 @@ func (p MongodbPlugin) OnAppStart() {
 	// init services
 	//services.InitUserService(session,db)
 	services.InitIdsService(session,db)
-
+	services.InitTestService(session,db)
+	services.InitQuestionService(session,db)
 	//userService = services.GetUserService()
 	idsService = services.GetIdsService()
+	testService = services.GetTestService()
+	questionService = services.GetQuestionService()
 }
 

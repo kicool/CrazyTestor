@@ -9,6 +9,7 @@ package controllers
 
 import (
 	"github.com/robfig/revel"
+	"CrazyTestor/app/models"
 )
 
 type TestController struct {
@@ -21,10 +22,22 @@ func (tc TestController) Index() revel.Result {
 	return tc.RenderJson(ret)
 }
 
-func (tc TestController) Add(title string) revel.Result {
+func (tc TestController) Add(title,desc string) revel.Result {
 	ret:=make(map[string]interface {})
 
-	ret["title"]=title
+	ret["success"]=true
+	testBean := &models.Test{}
+	testBean.Title = title
+	testBean.Desc = desc
+	testService.Add(testBean)
+	ret["value"] = testBean
+	return tc.RenderJson(ret)
+}
+
+func (tc TestController) Find() revel.Result {
+	ret:=make(map[string]interface {})
+	list:=testService.Find()
+	ret["list"] = list
 	return tc.RenderJson(ret)
 }
 

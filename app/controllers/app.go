@@ -14,11 +14,16 @@ func (c Application) Index() revel.Result {
 }
 
 func (c Application) Test() revel.Result {
-	return c.Render()
+	list:=testService.Find()
+	module := "test"
+	return c.Render(list,module)
 }
 
 func (c Application) Question() revel.Result {
-	return c.Render()
+	tests:=testService.Find();
+	module := "question"
+
+	return c.Render(module,tests)
 }
 
 func (c Application) Login() revel.Result{

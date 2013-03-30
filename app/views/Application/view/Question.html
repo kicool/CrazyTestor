@@ -1,11 +1,18 @@
 <div class="span10">
     <ul class="breadcrumb">
         <li><a href="Index">首页</a> <span class="divider">/</span></li>
-        <li class="active">测试管理</li>
+        <li class="active">问题管理</li>
     </ul>
     <div class="row-fluid">
 
-        <div style="margin-bottom: 5px;"></div>
+        <div style="margin-bottom: 5px;">
+         <span>问题列表:</span>
+            <select>
+                {{range .tests}}
+                    <option value="{{.Id}}">{{.Title}}</option>
+                {{end}}
+            </select>
+        </div>
         <table class="table table-bordered table-hover table-striped">
             <thead>
             <tr>
@@ -18,7 +25,7 @@
             </thead>
             <tbody>
 
-                {{range .list}}
+                {{range .tests}}
                 <tr>
                     <td style="text-align: center;vertical-align: middle">
                         {{.Id}}

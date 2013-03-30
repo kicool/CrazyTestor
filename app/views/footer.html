@@ -7,7 +7,7 @@
 <script src="public/bootstrap/js/bootstrap.js"></script>
 <script>
     $(function() {
-        var module = module || "index";
+        var module = window.leftAction || "index";
         var leftSelector = "a[data-menu=" + module + "]";
         $(leftSelector).parent().addClass("active");
         $("a[data-action=" + module + "]>i").addClass("icon-ok")

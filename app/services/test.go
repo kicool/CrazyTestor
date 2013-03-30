@@ -48,14 +48,20 @@ func (us *TestService) Add(test *models.Test) {
 	us.mutex.Unlock()
 }
 
-func InitUserService(session *mgo.Session, db *mgo.Database) {
+func (us *TestService) Find() []models.Test{
+	result :=[]models.Test{}
+	us.c.Find(nil).All(&result)
+	return result
+}
+
+func InitTestService(session *mgo.Session, db *mgo.Database) {
 	if _testServiceInstance == nil {
 		_testServiceInstance = &TestService{}
 		_testServiceInstance.Init(session, db, TEST_COLLECTION)
 	}
 }
 
-func GetUserService() *TestService {
+func GetTestService() *TestService {
 	return _testServiceInstance
 }
 
