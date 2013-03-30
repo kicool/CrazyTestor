@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"strconv"
+	//"CrazyTestor/app/models"
 )
 
 var (
@@ -49,20 +50,35 @@ func (c *Context) handle(s *Message) {
 	log.Println("handling:", data)
 
 	if data == "?" {
-		//question, answers := getQuestion(0)
-		//rsp *Message := mashup question and answers
-		rsp := s
-		(*rsp)["Content"] = "Hello Answer"
-		log.Println("start test")
-		// cmgr.out <- rsp 
+		question, answers := questionService.Get(0)
+		//rsp := mashup question and answers
+		rsp := &Message{"ToUserName": (*s)["FromUserName"],
+			"FromUserName": (*s)["ToUserName"],
+			"CreateTime":   (*s)["CreateTime"],
+			"MsgId":        (*s)["MsgId"],
+			"MsgType":      "text"}
+		(*rsp)["Content"] = question.Title + "\n" + answers[0].Content 
+
+		log.Println("start test", rsp)
+		cmgr.out <- rsp
+		
+		(*c).QuesstionID = question.Id
 		return
 	}
 
 	//amswer := getAnswer(pid, data)
-	rsp := s
-	(*rsp)["Content"] = "Hello Answer"
-	log.Println("next answer")
+	answer := questionService.GetAnswer((*c).QuesstionID, data)
+	rsp := &Message{"ToUserName": (*s)["FromUserName"],
+		"FromUserName": (*s)["ToUserName"],
+		"CreateTime":   (*s)["CreateTime"],
+		"MsgId":        (*s)["MsgId"],
+		"MsgType":      "text"}
+	question, answers := questionService.Get(answer.NextQuestionId)
+	(*rsp)["Content"] = question.Title + "\n" + answers[0].Content
+
+	log.Println("next answer", rsp)
 	cmgr.out <- rsp
+
 	return
 }
 
