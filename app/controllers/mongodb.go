@@ -23,6 +23,7 @@ var (
 	idsService *services.IdsService
 	testService *services.TestService
 	questionService *services.QuestionService
+	answerService *services.AnswerService
 
 )
 
@@ -41,6 +42,7 @@ func (p MongodbPlugin) OnAppStart() {
 	}
 
 	readDbName,confFound = revel.Config.String("dbName");
+	log.Println(readDbName)
 	if confFound{
 		dbName = readDbName
 	}
@@ -60,9 +62,11 @@ func (p MongodbPlugin) OnAppStart() {
 	services.InitIdsService(session,db)
 	services.InitTestService(session,db)
 	services.InitQuestionService(session,db)
+	services.InitAnswerService(session,db)
 	//userService = services.GetUserService()
 	idsService = services.GetIdsService()
 	testService = services.GetTestService()
 	questionService = services.GetQuestionService()
+	answerService = services.GetAnswerService()
 }
 

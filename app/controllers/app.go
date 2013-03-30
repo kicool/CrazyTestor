@@ -23,7 +23,12 @@ func (c Application) Question() revel.Result {
 	tests:=testService.Find();
 	module := "question"
 
-	return c.Render(module,tests)
+	testBean := testService.GetOne();
+	testId:=testBean.Id
+
+	list:=questionService.Find(testId)
+
+	return c.Render(module,tests,testId,list)
 }
 
 func (c Application) Login() revel.Result{

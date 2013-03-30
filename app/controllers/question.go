@@ -7,7 +7,10 @@
  */
 package controllers
 
-import "github.com/robfig/revel"
+import (
+	"github.com/robfig/revel"
+	"CrazyTestor/app/models"
+)
 
 type QuestionController struct {
 	 *revel.Controller
@@ -21,6 +24,14 @@ func (qc QuestionController) Index () revel.Result {
  */
 func (qc QuestionController) Add(testId int64,title string) revel.Result{
 	ret:=make(map[string]interface {})
+	ret["success"] = true
+
+	question:=&models.Question{}
+	question.Title = title
+	question.TestId = testId
+
+	questionService.Add(question)
+
 	return qc.RenderJson(ret)
 }
 
