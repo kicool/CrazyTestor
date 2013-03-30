@@ -30,11 +30,13 @@ func NewContext(s *Message) *Context {
 		CreateTime:   (*s)["CreateTime"],
 		MsgType:      (*s)["MsgType"],
 		Content:      (*s)["Content"]}
+		/*
 	c.MsgId, err = strconv.ParseInt((*s)["MsgId"], 10, 64)
 	if err != nil {
-		panic("strconv")
+		//panic("strconv")
+		log.Println("MsgId error")
 	}
-
+*/
 	return &c
 }
 
@@ -55,7 +57,7 @@ func (c *Context) handle(s *Message) {
 		rsp := &Message{"ToUserName": (*s)["FromUserName"],
 			"FromUserName": (*s)["ToUserName"],
 			"CreateTime":   (*s)["CreateTime"],
-			"MsgId":        (*s)["MsgId"],
+		//	"MsgId":        (*s)["MsgId"],
 			"MsgType":      "text"}
 		(*rsp)["Content"] = question.Title + "\n" + answers[0].Content 
 
@@ -71,7 +73,7 @@ func (c *Context) handle(s *Message) {
 	rsp := &Message{"ToUserName": (*s)["FromUserName"],
 		"FromUserName": (*s)["ToUserName"],
 		"CreateTime":   (*s)["CreateTime"],
-		"MsgId":        (*s)["MsgId"],
+	//	"MsgId":        (*s)["MsgId"],
 		"MsgType":      "text"}
 	question, answers := questionService.Get(answer.NextQuestionId)
 	(*rsp)["Content"] = question.Title + "\n" + answers[0].Content
