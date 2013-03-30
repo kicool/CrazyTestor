@@ -7,12 +7,11 @@
  */
 package models
 
-import "CrazyTestor/app/models"
 
 type Question struct {
-	Id int
-	TestId int
+	Id int64
+	TestId int64
 	Title string
-	Answers []models.Answer
+	Answers []Answer
 }
 

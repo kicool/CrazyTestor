@@ -11,7 +11,7 @@ import (
 	"github.com/robfig/revel"
 	"labix.org/v2/mgo"
 	"log"
-	"iia/app/services"
+	"CrazyTestor/app/services"
 )
 
 var (
@@ -21,7 +21,6 @@ var (
 	dbName  = "revel_test"
 
 	idsService *services.IdsService
-	userService *services.UserService
 
 )
 
@@ -55,10 +54,10 @@ func (p MongodbPlugin) OnAppStart() {
 	}
 
 	// init services
-	services.InitUserService(session,db)
+	//services.InitUserService(session,db)
 	services.InitIdsService(session,db)
 
-	userService = services.GetUserService()
+	//userService = services.GetUserService()
 	idsService = services.GetIdsService()
 }
 

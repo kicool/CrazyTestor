@@ -1,0 +1,18 @@
+<link rel="stylesheet" type="text/css" media="screen" href="public/plugin/css/bootstrap-notify.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="public/plugin/css/alert-bangtidy.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="public/plugin/css/alert-blackgloss.css" />
+<div class='notifications bottom-right show-blackgloss'></div>
+<script>
+    function msg(msg) {
+        $('.bottom-right').notify({
+            message: {
+                text: msg
+            },
+            type: "blackgloss"
+        }).show();
+    }
+    function err(message){
+        msg("错误:" + message);
+    }
+</script>
+<script src="public/plugin/js/bootstrap-notify.js" type="text/javascript"></script>

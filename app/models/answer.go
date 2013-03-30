@@ -8,9 +8,9 @@
 package models
 
 type Answer struct {
-	Id int
+	Id int64
 	Content string
 	Result string
-	NextQuestionId int
+	NextQuestionId int64
 }
 

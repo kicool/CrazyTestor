@@ -21,27 +21,27 @@ const (
 	QUESTION_COLLECTION = "tests"
 )
 
-type questionService struct {
+type QuestionService struct {
 	MongodbService
 }
 
-func (us *questionService) Get(id int64) string {
+func (us *QuestionService) Get(id int64) string {
 	return "test:" + strconv.Itoa(int(id))
 }
 
-func (us *questionService) Count() int {
+func (us *QuestionService) Count() int {
 	ret := 0
 	ret, _ = us.c.Count()
 	return ret
 }
 
-func (us *questionService) GetOne() *models.Test {
+func (us *QuestionService) GetOne() *models.Test {
 	result := &models.Test{}
 	us.c.Find(nil).One(result)
 	return result
 }
 
-func (us *questionService) Add(test *models.Test) {
+func (us *QuestionService) Add(test *models.Test) {
 	us.mutex.Lock()
 	test.Id = GetIdsService().GetNext(us.coll)
 	us.c.Insert(test)
@@ -50,12 +50,12 @@ func (us *questionService) Add(test *models.Test) {
 
 func InitQuestionService(session *mgo.Session, db *mgo.Database) {
 	if _questionServiceInstance == nil {
-		_questionServiceInstance = &questionService{}
+		_questionServiceInstance = &QuestionService{}
 		_questionServiceInstance.Init(session, db, TEST_COLLECTION)
 	}
 }
 
-func GetQuestionService() *questionService {
+func GetQuestionService() *QuestionService {
 	return _questionServiceInstance
 }
 

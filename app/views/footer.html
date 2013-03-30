@@ -1,2 +1,16 @@
-  </body>
-</html>
+<hr>
+
+<footer>
+    <p>&copy;2013</p>
+</footer>
+
+<script src="public/bootstrap/js/bootstrap.js"></script>
+<script>
+    $(function() {
+        var module = module || "index";
+        var leftSelector = "a[data-menu=" + module + "]";
+        $(leftSelector).parent().addClass("active");
+        $("a[data-action=" + module + "]>i").addClass("icon-ok")
+    })
+
+</script>

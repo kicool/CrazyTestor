@@ -8,7 +8,8 @@
 package models
 
 type Test struct {
-	Id int
+	Id int64
 	Title string
+	Desc string
 }
 
