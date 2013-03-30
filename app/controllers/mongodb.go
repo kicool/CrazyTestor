@@ -17,7 +17,7 @@ import (
 var (
 	session *mgo.Session
 	db      *mgo.Database
-	dbHost  = "localhost"
+	dbHost  = "192.168.1.45"
 	dbName  = "revel_test"
 
 	idsService *services.IdsService
