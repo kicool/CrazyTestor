@@ -22,3 +22,6 @@ _testmain.go
 .idea
 *.iml
 *.exe
+
+# revel
+app/tmp/
