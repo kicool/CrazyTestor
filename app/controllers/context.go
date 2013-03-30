@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"strconv"
-	"time"
 )
 
 var (
@@ -45,7 +44,7 @@ func (c *Context) sameUser(s *Message) bool {
 }
 
 func (c *Context) handle(s *Message) {
-	switch (*s).Content {
+	switch (*s)["Content"] {
 	case "?":
 		fmt.Println("start test")
 
@@ -59,25 +58,23 @@ type ContextMgr struct {
 	out  chan *Message
 }
 
-func In(s *Message) {
-	go func() {
-		(*cmgr).in <- s
-	}()
+func Invoke(s *map[string]string) *map[string]string {
+	(*cmgr).in <- (*Message)(s)
+	omsg := <-(*cmgr).out
+	return (*map[string]string)(omsg)
 }
 
-func Out(s *Message) {
-
-}
-
-func Run() {
+func RunContextMgr() {
 	if cmgr == nil {
 		cmgr = new(ContextMgr)
 		cmgr.ctxs = make([]*Context, DEFAULT_LEN, DEFAULT_LEN)
 		cmgr.in = make(chan *Message)
 		cmgr.out = make(chan *Message)
+		fmt.Println("ContextMgr created")
 	}
 
 	go func() {
+		fmt.Println("ContextMgr Loop")
 		for { //TODO for quite
 			select {
 			case s := <-cmgr.in:
@@ -104,13 +101,3 @@ func Run() {
 		}
 	}()
 }
-
-/*
-func main() {
-	s := Message{"ToUserName": "CrazyTestor", "FromUserName": "Testuser1", "MsgId": "12345"}
-	fmt.Println(s)
-	Run()
-	In(&s)
-	time.Sleep(10 * time.Second)
-}
-*/
