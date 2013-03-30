@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 )
 
@@ -19,6 +19,7 @@ type Context struct {
 	MsgType      string
 	Content      string
 	MsgId        int64
+	QuesstionID  int64
 }
 
 func NewContext(s *Message) *Context {
@@ -36,7 +37,7 @@ func NewContext(s *Message) *Context {
 	return &c
 }
 
-func (c *Context) sameUser(s *Message) bool {
+func (c *Context) sameSession(s *Message) bool {
 	if c.FromUserName == (*s)["FromUserName"] {
 		return true
 	}
@@ -44,12 +45,25 @@ func (c *Context) sameUser(s *Message) bool {
 }
 
 func (c *Context) handle(s *Message) {
-	switch (*s)["Content"] {
-	case "?":
-		fmt.Println("start test")
+	data := (*s)["Content"]
+	log.Println("handling:", data)
 
-	default:
+	if data == "?" {
+		//question, answers := getQuestion(0)
+		//rsp *Message := mashup question and answers
+		rsp := s
+		(*rsp)["Content"] = "Hello Answer"
+		log.Println("start test")
+		// cmgr.out <- rsp 
+		return
 	}
+
+	//amswer := getAnswer(pid, data)
+	rsp := s
+	(*rsp)["Content"] = "Hello Answer"
+	log.Println("next answer")
+	cmgr.out <- rsp
+	return
 }
 
 type ContextMgr struct {
@@ -70,24 +84,24 @@ func RunContextMgr() {
 		cmgr.ctxs = make([]*Context, DEFAULT_LEN, DEFAULT_LEN)
 		cmgr.in = make(chan *Message)
 		cmgr.out = make(chan *Message)
-		fmt.Println("ContextMgr created")
+		log.Println("ContextMgr created")
 	}
 
 	go func() {
-		fmt.Println("ContextMgr Loop")
+		log.Println("ContextMgr Loop")
 		for { //TODO for quite
 			select {
 			case s := <-cmgr.in:
 				var i int
 				var k *Context
 				for i, k = range cmgr.ctxs {
-					if k != nil && k.sameUser(s) {
-						fmt.Println("Message Exit")
+					if k != nil && k.sameSession(s) {
+						log.Println("Message Exit")
 						go k.handle(s)
 						goto NEXT
 					}
 				}
-				fmt.Println("Message not Exit", i)
+				log.Println("Message not Exit", i)
 				for i, k = range cmgr.ctxs {
 					if k == nil {
 						cmgr.ctxs[i] = NewContext(s)
