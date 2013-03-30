@@ -11,6 +11,7 @@ import (
 	"labix.org/v2/mgo"
 	"strconv"
 	"CrazyTestor/app/models"
+	"labix.org/v2/mgo/bson"
 )
 
 var (
@@ -18,7 +19,7 @@ var (
 )
 
 const (
-	QUESTION_COLLECTION = "tests"
+	QUESTION_COLLECTION = "questions"
 )
 
 type QuestionService struct {
@@ -35,23 +36,28 @@ func (us *QuestionService) Count() int {
 	return ret
 }
 
-func (us *QuestionService) GetOne() *models.Test {
-	result := &models.Test{}
+func (us *QuestionService) GetOne() *models.Question {
+	result := &models.Question{}
 	us.c.Find(nil).One(result)
 	return result
 }
+func (us *QuestionService) Find(testId int64) []models.Question{
+	result :=[]models.Question{}
+	us.c.Find(bson.M{"testid": testId}).All(&result)
+	return result
+}
 
-func (us *QuestionService) Add(test *models.Test) {
+func (us *QuestionService) Add(q *models.Question) {
 	us.mutex.Lock()
-	test.Id = GetIdsService().GetNext(us.coll)
-	us.c.Insert(test)
+	q.Id = GetIdsService().GetNext(us.coll)
+	us.c.Insert(q)
 	us.mutex.Unlock()
 }
 
 func InitQuestionService(session *mgo.Session, db *mgo.Database) {
 	if _questionServiceInstance == nil {
 		_questionServiceInstance = &QuestionService{}
-		_questionServiceInstance.Init(session, db, TEST_COLLECTION)
+		_questionServiceInstance.Init(session, db, QUESTION_COLLECTION)
 	}
 }
 

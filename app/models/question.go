@@ -12,6 +12,5 @@ type Question struct {
 	Id int64
 	TestId int64
 	Title string
-	Answers []Answer
 }
 

@@ -6,8 +6,8 @@
     <div class="row-fluid">
 
         <div style="margin-bottom: 5px;">
-         <span>问题列表:</span>
-            <select>
+         <span>测试列表:</span>
+            <select id="tests" currentId="{{.testId}}">
                 {{range .tests}}
                     <option value="{{.Id}}">{{.Title}}</option>
                 {{end}}
@@ -17,24 +17,26 @@
             <thead>
             <tr>
                 <th style="text-align: center;width: 30px;">ID</th>
+                <th style="text-align: center">测试Id</th>
                 <th style="text-align: center">标题</th>
-                <th style="text-align: center">描述</th>
+
 
                 <th style="text-align: center;width: 250px;">操作</th>
             </tr>
             </thead>
             <tbody>
 
-                {{range .tests}}
+                {{range .list}}
                 <tr>
                     <td style="text-align: center;vertical-align: middle">
                         {{.Id}}
                     </td>
+                    <td style="vertical-align: middle;width: 50px;"> {{.TestId}}</td>
                     <td style="vertical-align: middle"> {{.Title}}</td>
-                    <td style="vertical-align: middle"> {{.Desc}}</td>
+
                     <td  style="vertical-align: middle;text-align: center;">
 
-                        <span data-id="{{.Id}}" data-action="edit" class="btn btn-info" ><i class="icon-edit icon-white"></i>设置问题</span>
+                        <span data-id="{{.Id}}" data-action="edit" class="btn btn-info" ><i class="icon-edit icon-white"></i>设置答案</span>
 
                         <span data-id="{{.Id}}" data-action="delete" class="btn btn-inverse" ><i class="icon-trash icon-white"></i>删除</span>
                     </td>
@@ -45,19 +47,14 @@
             </tbody>
         </table>
         <hr>
-        <form id="testForm" action="#"  class="form-horizontal" style="margin-top: 10px;">
+        <form id="questionForm" action="#"  class="form-horizontal" style="margin-top: 10px;">
             <div class="control-group">
                 <label class="control-label" for="title">标题</label>
                 <div class="controls">
                     <input type="text" id="title" data-not-null="true" placeholder="标题">
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="desc">描述</label>
-                <div class="controls">
-                    <textarea id="desc" data-not-null="true"  placeholder="描述"></textarea>
-                </div>
-            </div>
+            <input type="hidden" id="testId" value="{{.testId}}">
 
             <div class="control-group">
                 <div class="controls">
@@ -70,18 +67,18 @@
 {{template "msg.html" .}}
 <script>
     $(function(){
-        var testForm = new SmartForm("testForm",[
-            "title","desc"
+        var questionForm = new SmartForm("questionForm",[
+            "title","testId"
         ],{
             action:"GET",
-            url:"test/add",
+            url:"question/add",
             debug:false
         });
-        testForm.onVerificationError(function(elObj){
+        questionForm.onVerificationError(function(elObj){
             msg("请填写内容.");
             elObj.el.focus();
         });
-        testForm.onSuccess(function(data){
+        questionForm.onSuccess(function(data){
             if(!data.success){
                 msg("错误:" + data.message);
             } else {
@@ -91,7 +88,7 @@
 
         $("span[data-action=\"delete\"]").click(function(){
             var id = $(this).attr("data-id");
-            var url = "test?action=delete&id=" + id;
+            var url = "question?action=delete&id=" + id;
             $.ajax({
                 url:url,
                 success:function(data){
