@@ -81,6 +81,7 @@ func (c *Context) handle(s *Message) {
 	log.Println("next answer", rsp)
 	cmgr.out <- rsp
 
+	(*c).QuesstionID = question.Id
 	return
 }
 
